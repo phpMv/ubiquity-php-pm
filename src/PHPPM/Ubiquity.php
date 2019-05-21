@@ -33,8 +33,7 @@ class Ubiquity implements BridgeInterface {
 	protected $httpInstance;
 
 	public function __construct() {
-		$dir = dirname(__DIR__, 6);
-		$this->root = ($dir == DIRECTORY_SEPARATOR) ? '' : $dir;
+		$this->root = dirname(__DIR__, 5);
 		$this->httpInstance = new ReactHttp();
 	}
 
