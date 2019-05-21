@@ -1,0 +1,37 @@
+{
+	"name" : "phpmv/ubiquity-php-pm",
+	"description" : "php-pm extension for Ubiquity framework",
+	"type" : "extension",
+	"keywords" : [
+		"php",
+		"framework",
+		"mvc",
+		"orm",
+		"server"
+	],
+	"require" : {
+		"php" : ">7.0",
+		"php-pm/php-pm" : "^2.0",
+		"phpmv/ubiquity-reactphp" : "^1.0",
+		"phpmv/ubiquity": "dev-master"
+	},
+	"license" : "Apache-2.0",
+	"authors" : [{
+			"name" : "Jean-Christophe HERON",
+			"email" : "myaddressmail@gmail.com",
+			"role" : "Lead developer"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"PHPPM\\" : "src/PHPPM/"
+		}
+	},
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0.x-dev"
+		}
+	},
+	"require-dev" : {
+	}
+}
