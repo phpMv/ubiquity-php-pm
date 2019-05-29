@@ -38,18 +38,16 @@ class Ubiquity implements BridgeInterface {
 	}
 
 	public function handle(ServerRequestInterface $request): ResponseInterface {
-		$_GET['c'] = '';
 		$uri = ltrim(urldecode(parse_url($request->getUri()->getPath(), PHP_URL_PATH)), '/');
 		if ($uri == null || ! file_exists($this->root . \DS . $uri)) {
 			$_GET['c'] = $uri;
 		} else {
+			$_GET['c'] = '';
 			$headers = $request->getHeaders();
 			$headers['Content-Type'] = current($headers['Accept']);
 			return new \React\Http\Response($this->httpInstance->getResponseCode(), $headers, file_get_contents($this->root . \DS . $uri));
 		}
 
-		$headers = $request->getHeaders();
-		$headers['Content-Type'] = current($headers['Accept']);
 		$this->httpInstance->setRequest($request);
 		Psr7::requestToGlobal($request);
 
