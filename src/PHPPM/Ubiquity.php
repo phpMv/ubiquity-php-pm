@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Ubiquity\utils\http\foundation\Psr7;
 use Ubiquity\utils\http\foundation\ReactHttp;
+use React\Http\Response;
 
 /**
  * PHP-PM Http bootstrap for Ubiquity.
@@ -38,6 +39,7 @@ class Ubiquity implements BridgeInterface {
 	}
 
 	public function handle(ServerRequestInterface $request): ResponseInterface {
+		gc_collect_cycles();
 		$uri = ltrim(urldecode(parse_url($request->getUri()->getPath(), PHP_URL_PATH)), '/');
 		if ($uri == null || ! file_exists($this->root . \DS . $uri)) {
 			$_GET['c'] = $uri;
@@ -45,17 +47,20 @@ class Ubiquity implements BridgeInterface {
 			$_GET['c'] = '';
 			$headers = $request->getHeaders();
 			$headers['Content-Type'] = current($headers['Accept']);
-			return new \React\Http\Response($this->httpInstance->getResponseCode(), $headers, file_get_contents($this->root . \DS . $uri));
+			return new \React\Http\Response(200, $headers, file_get_contents($this->root . \DS . $uri));
 		}
-
-		$this->httpInstance->setRequest($request);
+		$headers = $request->getHeaders();
+		$response = new Response(200, [
+			'Content-Type' => current($headers['Accept'])
+		]);
+		$this->httpInstance->setRequest($request, $response);
 		Psr7::requestToGlobal($request);
 
 		\ob_start();
 		\Ubiquity\controllers\Startup::setHttpInstance($this->httpInstance);
 		\Ubiquity\controllers\Startup::run($this->config);
 		$content = ob_get_clean();
-		return new \React\Http\Response($this->httpInstance->getResponseCode(), $this->httpInstance->getAllHeaders(), $content);
+		return $response->withBody($content);
 	}
 
 	public function bootstrap($appBootstrap, $appenv, $debug) {
