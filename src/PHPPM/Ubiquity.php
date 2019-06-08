@@ -60,7 +60,8 @@ class Ubiquity implements BridgeInterface {
 		\Ubiquity\controllers\Startup::setHttpInstance($this->httpInstance);
 		\Ubiquity\controllers\Startup::run($this->config);
 		$content = ob_get_clean();
-		return $response->withBody($content);
+		$response->getBody()->write($content);
+		return $response;
 	}
 
 	public function bootstrap($appBootstrap, $appenv, $debug) {
