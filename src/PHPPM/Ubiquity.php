@@ -13,7 +13,7 @@ use Ubiquity\utils\http\foundation\ReactHttp;
  * This class is part of Ubiquity
  *
  * @author jcheron <myaddressmail@gmail.com>
- * @version 1.0.0
+ * @version 1.0.1
  *         
  */
 class Ubiquity implements BridgeInterface {

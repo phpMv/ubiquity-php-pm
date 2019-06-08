@@ -12,7 +12,7 @@
 	"require" : {
 		"php" : ">7.0",
 		"php-pm/php-pm" : "^2.0",
-		"phpmv/ubiquity-reactphp" : "^1.0",
+		"phpmv/ubiquity-reactphp" : "1.0.x-dev",
 		"phpmv/ubiquity": "dev-master"
 	},
 	"license" : "Apache-2.0",
