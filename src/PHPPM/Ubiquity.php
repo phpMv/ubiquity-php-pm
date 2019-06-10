@@ -67,7 +67,7 @@ class Ubiquity implements BridgeInterface {
 		$sConfig = include $this->root . \DS . '.ubiquity' . \DS . 'react-config.php';
 		$config["sessionName"] = $sConfig["sessionName"] ?? null;
 		$address = ($sConfig['host'] ?? '127.0.0.1') . ':' . ($sConfig['port'] ?? 8080);
-		$config["siteUrl"] = 'http://' . $address;
+		$config["siteUrl"] = 'http://' . $address . '/';
 		require $this->root . '/vendor/autoload.php';
 		require ROOT . 'config/services.php';
 		$this->config = $config;
