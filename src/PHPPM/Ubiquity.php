@@ -53,7 +53,7 @@ class Ubiquity implements BridgeInterface {
 
 		\ob_start();
 		\Ubiquity\controllers\Startup::setHttpInstance($this->httpInstance);
-		\Ubiquity\controllers\Startup::run($this->config);
+		\Ubiquity\controllers\Startup::forward($_GET['c']);
 		$content = ob_get_clean();
 		return new \React\Http\Response($this->httpInstance->getResponseCode(), $this->httpInstance->getAllHeaders(), $content);
 	}
