@@ -13,7 +13,7 @@ use Ubiquity\utils\http\foundation\ReactHttp;
  * This class is part of Ubiquity
  *
  * @author jcheron <myaddressmail@gmail.com>
- * @version 1.0.1
+ * @version 1.0.2
  *
  */
 class Ubiquity implements BridgeInterface {
@@ -55,8 +55,7 @@ class Ubiquity implements BridgeInterface {
 
 		\ob_start();
 		\Ubiquity\controllers\Startup::forward($uri);
-		$content = ob_get_clean();
-		return new \React\Http\Response($this->httpInstance->getResponseCode(), $this->httpInstance->getAllHeaders(), $content);
+		return new \React\Http\Response($this->httpInstance->getResponseCode(), $this->httpInstance->getAllHeaders(), \ob_get_clean());
 	}
 
 	public function bootstrap($appBootstrap, $appenv, $debug) {
