@@ -14,7 +14,7 @@ use Ubiquity\utils\http\foundation\ReactHttp;
  *
  * @author jcheron <myaddressmail@gmail.com>
  * @version 1.0.1
- *         
+ *
  */
 class Ubiquity implements BridgeInterface {
 
@@ -38,22 +38,23 @@ class Ubiquity implements BridgeInterface {
 	}
 
 	public function handle(ServerRequestInterface $request): ResponseInterface {
-		$uri = ltrim(urldecode(parse_url($request->getUri()->getPath(), PHP_URL_PATH)), '/');
-		if ($uri == null || ! file_exists($this->root . \DS . $uri)) {
+		$uri = \ltrim(\urldecode(\parse_url($request->server['request_uri'], PHP_URL_PATH)), '/');
+		if ($uri == null || ! ($fe = \file_exists($this->root . \DS . $uri))) {
 			$_GET['c'] = $uri;
 		} else {
-			$_GET['c'] = '';
-			$headers = $request->getHeaders();
-			$headers['Content-Type'] = current($headers['Accept']);
-			return new \React\Http\Response($this->httpInstance->getResponseCode(), $headers, file_get_contents($this->root . \DS . $uri));
+			if ($fe) {
+				$headers = $request->getHeaders();
+				$headers['Content-Type'] = \current($headers['Accept']) ?? 'text/html; charset=utf-8';
+				return new \React\Http\Response($this->httpInstance->getResponseCode(), $headers, file_get_contents($this->root . \DS . $uri));
+			}
+			return new \React\Http\Response(404, $headers, "$uri not found!");
 		}
 
 		$this->httpInstance->setRequest($request);
 		Psr7::requestToGlobal($request);
 
 		\ob_start();
-		\Ubiquity\controllers\Startup::setHttpInstance($this->httpInstance);
-		\Ubiquity\controllers\Startup::forward($_GET['c']);
+		\Ubiquity\controllers\Startup::forward($uri);
 		$content = ob_get_clean();
 		return new \React\Http\Response($this->httpInstance->getResponseCode(), $this->httpInstance->getAllHeaders(), $content);
 	}
@@ -71,5 +72,7 @@ class Ubiquity implements BridgeInterface {
 		require $this->root . '/vendor/autoload.php';
 		require ROOT . 'config/services.php';
 		$this->config = $config;
+		\Ubiquity\controllers\Startup::init($config);
+		\Ubiquity\controllers\Startup::setHttpInstance($this->httpInstance);
 	}
 }
