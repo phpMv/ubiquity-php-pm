@@ -72,7 +72,7 @@ class Ubiquity implements BridgeInterface {
 		require $this->root . '/vendor/autoload.php';
 		require ROOT . 'config/services.php';
 		$this->config = $config;
-		\Ubiquity\controllers\Startup::init($config);
+		\Ubiquity\controllers\Startup::init($this->config);
 		\Ubiquity\controllers\Startup::setHttpInstance($this->httpInstance);
 	}
 }
