@@ -38,7 +38,7 @@ class Ubiquity implements BridgeInterface {
 	}
 
 	public function handle(ServerRequestInterface $request): ResponseInterface {
-		$uri = \ltrim(\urldecode(\parse_url($request->server['request_uri'], PHP_URL_PATH)), '/');
+		$uri = \ltrim(\urldecode(\parse_url($request->getUri()->getPath(), PHP_URL_PATH)), '/');
 		if ($uri == null || ! ($fe = \file_exists($this->root . \DS . $uri))) {
 			$_GET['c'] = $uri;
 		} else {
