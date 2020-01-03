@@ -11,9 +11,8 @@
 	],
 	"require" : {
 		"php" : ">7.0",
-		"php-pm/php-pm" : "^2.0",
-		"phpmv/ubiquity-reactphp" : "dev-master",
-		"phpmv/ubiquity": "dev-master"
+		"php-pm/php-pm" : "dev-master",
+		"phpmv/ubiquity-reactphp" : "dev-master"
 	},
 	"license" : "Apache-2.0",
 	"authors" : [{
